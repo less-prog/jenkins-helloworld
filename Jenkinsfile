@@ -1,30 +1,23 @@
 pipeline {
     agent any
+
     stages {
-        stage('Pull') {
+        stage('Clone') {
             steps {
-                checkout([$class: 'GitSCM',
-                branches: [[name: '*/master']],
-                doGenerateSubmoduleConfigurations: false,
-                extensions: [],
-                submoduleCfg: [],
-                userRemoteConfigs: [[
-                    url: 'git@github.com:less-prog/jenkins-helloworld.git',
-                    credentialsId: 'github-less'
-                ]]])
-                sh "ls"
+                git branch: '*/master', url: 'https://github.com/less-prog/jenkins-helloworld.git'
             }
         }
+        
         stage('Build') {
             steps {
-                sh "javac Main.java"
+                sh 'javac Main.java'
             }
         }
+        
         stage('Run') {
             steps {
-                sh "java Main"
+                sh 'java Main'
             }
         }
     }
 }
-
